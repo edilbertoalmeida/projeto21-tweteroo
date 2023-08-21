@@ -3,16 +3,15 @@ import { User } from "src/entities/users.module";
 
 export class CreateUserDto {
     @IsString()
-    @IsNotEmpty()
-    name: string;
+    @IsNotEmpty({ message: 'All fields are required!' })
+    username: string;
 
     @IsString()
-    @IsNotEmpty()
-    @IsUrl()
+    @IsNotEmpty({ message: 'All fields are required!' })
     avatar: string;
 
     toUser() {
-        return (this.name, this.avatar);
+        return (this.username, this.avatar);
     }
 
 }

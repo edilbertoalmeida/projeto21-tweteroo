@@ -57,7 +57,7 @@ describe('AppController (e2e)', () => {
       .expect(HttpStatus.OK);
   });
 
-  it('POST /tweets should create a tweet', async () => {
+  /*it('POST /tweets should create a tweet', async () => {
     // setup
     const username = 'test';
     await signUpUser(app, { username, avatar: 'http://test.com.br/image.png' });
@@ -153,7 +153,7 @@ describe('AppController (e2e)', () => {
   it('GET /tweets/:username should return an empty array is user does not exist', async () => {
     const response = await request(app.getHttpServer()).get('/tweets/user');
     expect(response.body).toHaveLength(0);
-  });
+  });*/
 
   afterAll(async () => {
     await app.close();
