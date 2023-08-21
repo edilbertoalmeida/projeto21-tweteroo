@@ -3,11 +3,11 @@ import { Tweet } from "src/entities/tweet.module";
 
 export class CreateTweetDto {
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'All fields are required!' })
     username: string;  // com dúvida se isso vai funcionar;
 
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'All fields are required!' })
     tweet: string;
 
     toTweet() {

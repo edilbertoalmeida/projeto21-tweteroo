@@ -8,6 +8,7 @@ export class CreateUserDto {
 
     @IsString()
     @IsNotEmpty({ message: 'All fields are required!' })
+    @IsUrl()
     avatar: string;
 
     toUser() {
