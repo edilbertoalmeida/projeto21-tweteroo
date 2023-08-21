@@ -26,6 +26,42 @@ export class AppService {
     return this.users
   }
 
+  getTweets(page: number) {
+    const numPage = Number(page);
+
+    if (numPage < 1) throw new HttpException("Informe uma página válida!", HttpStatus.BAD_REQUEST)
+
+    const tweets = this.tweets.map(tweet => ({
+      ...tweet.getUserInfo(),
+      tweet: tweet.getTweet(),
+    }));
+
+    const startIndex = (numPage - 1) * 15;
+    const endIndex = startIndex + 15
+
+    if (isNaN(numPage)) {
+      const selectedTweets = tweets.slice(-15);
+      return selectedTweets
+    }
+
+    const selectedTweets = tweets.slice(startIndex, endIndex);
+    return selectedTweets
+
+  }
+
+  getTweetsByUsername(username: string) {
+    const tweetsByUser = this.tweets.filter((t) => t.getUserInfo().username === username)
+
+    if (tweetsByUser.length === 0) return []
+
+    const tweetResponse = tweetsByUser.map(tweet => ({
+      ...tweet.getUserInfo(),
+      tweet: tweet.getTweet()
+    }));
+    return tweetResponse;
+
+  }
+
   createUser(userDTO: CreateUserDto) {
 
     const newUser = new User(userDTO.username, userDTO.avatar);
@@ -48,28 +84,5 @@ export class AppService {
     };
     return tweetResponse;
   }
-
-  getTweets() {
-    const tweetResponses = this.tweets.map(tweet => ({
-      ...tweet.getUserInfo(),
-      tweet: tweet.getTweet(),
-    }));
-
-    return tweetResponses;
-  }
-
-  getTweetsByUsername(username: string) {
-    const tweetsByUser = this.tweets.filter((t) => t.getUserInfo().username === username)
-
-    if (tweetsByUser.length === 0) return []
-
-    const tweetResponse = tweetsByUser.map(tweet => ({
-      ...tweet.getUserInfo(),
-      tweet: tweet.getTweet()
-    }));
-    return tweetResponse;
-
-  }
-
 
 }
