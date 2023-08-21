@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from './entities/users.module';
 import { Tweet } from './entities/tweet.module';
 import { CreateUserDto } from './dtos/users.dto';
+import { CreateTweetDto } from './dtos/tweet.dto';
+import { error } from 'console';
 
 @Injectable()
 export class AppService {
@@ -29,5 +31,28 @@ export class AppService {
     this.users.push(newUser);
     return newUser;
 
+  }
+
+  getTweets() {
+    return this.tweets
+  }
+
+  createTweet(tweetDTO: CreateTweetDto) {
+
+    const user = this.isUserLogged(tweetDTO.username)
+
+    if (!user) {
+      throw new HttpException("You need being logged to tweet", HttpStatus.UNAUTHORIZED)
+    }
+
+    const newTweet = new Tweet(tweetDTO.username, user.getAvatar(), tweetDTO.tweet);
+    this.tweets.push(newTweet);
+    return newTweet;
+
+  }
+
+  private isUserLogged(username: string): User {
+    const userExists = this.users.find((user) => user.getUsername() === username)
+    return userExists;
   }
 }
